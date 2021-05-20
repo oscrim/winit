@@ -1,7 +1,7 @@
 use super::event;
 use super::EventListenerHandle;
 use crate::dpi::PhysicalPosition;
-use crate::event::{ModifiersState, MouseButton, PointerType};
+use crate::event::{ModifiersState, MouseButton};
 
 use web_sys::PointerEvent;
 
@@ -146,7 +146,7 @@ impl PointerHandler {
 
     pub fn on_pointer_down<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>, PointerType),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
         self.on_pointer_down = Some(canvas_common.add_event(
             "pointerdown",
@@ -157,12 +157,6 @@ impl PointerHandler {
                         x: event.offset_x() as f64,
                         y: event.offset_y() as f64,
                     },
-                    match event.pointer_type().as_str() {
-                        "mouse" => PointerType::Mouse,
-                        "pen" => PointerType::Pen,
-                        "touch" => PointerType::Touch,
-                        _ => PointerType::Unknown,
-                    },
                 );
             },
         ));
@@ -170,7 +164,7 @@ impl PointerHandler {
 
     pub fn on_pointer_up<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>, PointerType),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
         self.on_pointer_up = Some(canvas_common.add_event(
             "pointerup",
@@ -181,12 +175,6 @@ impl PointerHandler {
                         x: event.offset_x() as f64,
                         y: event.offset_y() as f64,
                     },
-                    match event.pointer_type().as_str() {
-                        "mouse" => PointerType::Mouse,
-                        "pen" => PointerType::Pen,
-                        "touch" => PointerType::Touch,
-                        _ => PointerType::Unknown,
-                    },
                 );
             },
         ));
@@ -194,7 +182,7 @@ impl PointerHandler {
 
     pub fn on_pointer_cancel<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>, PointerType),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
         self.on_pointer_cancel = Some(canvas_common.add_event(
             "pointercancel",
@@ -204,12 +192,6 @@ impl PointerHandler {
                     PhysicalPosition {
                         x: event.offset_x() as f64,
                         y: event.offset_y() as f64,
-                    },
-                    match event.pointer_type().as_str() {
-                        "mouse" => PointerType::Mouse,
-                        "pen" => PointerType::Pen,
-                        "touch" => PointerType::Touch,
-                        _ => PointerType::Unknown,
                     },
                 );
             },
