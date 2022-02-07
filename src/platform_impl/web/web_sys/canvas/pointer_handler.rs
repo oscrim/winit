@@ -124,6 +124,7 @@ impl PointerHandler {
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
+        let canvas = canvas_common.raw.clone();
         self.on_touch_move = Some(canvas_common.add_event(
             "pointermove",
             move |event: PointerEvent| {
@@ -135,7 +136,8 @@ impl PointerHandler {
                     event.pointer_id(),
                     PhysicalPosition {
                         x: event.offset_x() as f64,
-                        y: event.offset_y() as f64,
+                        // Flip the Y axis.
+                        y: (canvas.height() as i32 - event.offset_y()) as f64,
                     },
                 );
             },
@@ -146,6 +148,7 @@ impl PointerHandler {
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
+        let canvas = canvas_common.raw.clone();
         self.on_touch_down = Some(canvas_common.add_event(
             "pointerdown",
             move |event: PointerEvent| {
@@ -157,7 +160,8 @@ impl PointerHandler {
                     event.pointer_id(),
                     PhysicalPosition {
                         x: event.offset_x() as f64,
-                        y: event.offset_y() as f64,
+                        // Flip the Y axis.
+                        y: (canvas.height() as i32 - event.offset_y()) as f64,
                     },
                 );
             },
@@ -168,6 +172,7 @@ impl PointerHandler {
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
+        let canvas = canvas_common.raw.clone();
         self.on_touch_up = Some(canvas_common.add_event(
             "pointerup",
             move |event: PointerEvent| {
@@ -179,7 +184,8 @@ impl PointerHandler {
                     event.pointer_id(),
                     PhysicalPosition {
                         x: event.offset_x() as f64,
-                        y: event.offset_y() as f64,
+                        // Flip the Y axis.
+                        y: (canvas.height() as i32 - event.offset_y()) as f64,
                     },
                 );
             },
@@ -190,6 +196,7 @@ impl PointerHandler {
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
+        let canvas = canvas_common.raw.clone();
         self.on_touch_cancel = Some(canvas_common.add_event(
             "pointercancel",
             move |event: PointerEvent| {
@@ -201,7 +208,8 @@ impl PointerHandler {
                     event.pointer_id(),
                     PhysicalPosition {
                         x: event.offset_x() as f64,
-                        y: event.offset_y() as f64,
+                        // Flip the Y axis.
+                        y: (canvas.height() as i32 - event.offset_y()) as f64,
                     },
                 );
             },
