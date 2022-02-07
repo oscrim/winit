@@ -120,7 +120,7 @@ impl PointerHandler {
         ));
     }
 
-    pub fn on_pointer_move<F>(&mut self, canvas_common: &super::Common, mut handler: F)
+    pub fn on_touch_move<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
@@ -142,7 +142,7 @@ impl PointerHandler {
         ));
     }
 
-    pub fn on_pointer_down<F>(&mut self, canvas_common: &super::Common, mut handler: F)
+    pub fn on_touch_down<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
@@ -164,7 +164,7 @@ impl PointerHandler {
         ));
     }
 
-    pub fn on_pointer_up<F>(&mut self, canvas_common: &super::Common, mut handler: F)
+    pub fn on_touch_up<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {
@@ -186,7 +186,7 @@ impl PointerHandler {
         ));
     }
 
-    pub fn on_pointer_cancel<F>(&mut self, canvas_common: &super::Common, mut handler: F)
+    pub fn on_touch_cancel<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
         F: 'static + FnMut(i32, PhysicalPosition<f64>),
     {

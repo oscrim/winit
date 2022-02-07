@@ -266,7 +266,7 @@ impl<T> EventLoopWindowTarget<T> {
         });
 
         let runner = self.runner.clone();
-        canvas.on_pointer_move(move |device_id, location| {
+        canvas.on_touch_move(move |device_id, location| {
             runner.send_event(Event::WindowEvent {
                 window_id: RootWindowId(id),
                 event: WindowEvent::Touch(Touch {
@@ -280,7 +280,7 @@ impl<T> EventLoopWindowTarget<T> {
         });
 
         let runner = self.runner.clone();
-        canvas.on_pointer_down(move |device_id, location| {
+        canvas.on_touch_down(move |device_id, location| {
             runner.send_event(Event::WindowEvent {
                 window_id: RootWindowId(id),
                 event: WindowEvent::Touch(Touch {
@@ -294,7 +294,7 @@ impl<T> EventLoopWindowTarget<T> {
         });
 
         let runner = self.runner.clone();
-        canvas.on_pointer_up(move |device_id, location| {
+        canvas.on_touch_up(move |device_id, location| {
             runner.send_event(Event::WindowEvent {
                 window_id: RootWindowId(id),
                 event: WindowEvent::Touch(Touch {
@@ -308,7 +308,7 @@ impl<T> EventLoopWindowTarget<T> {
         });
 
         let runner = self.runner.clone();
-        canvas.on_pointer_cancel(move |device_id, location| {
+        canvas.on_touch_cancel(move |device_id, location| {
             runner.send_event(Event::WindowEvent {
                 window_id: RootWindowId(id),
                 event: WindowEvent::Touch(Touch {
