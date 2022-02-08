@@ -1,8 +1,10 @@
 use super::event;
 use super::EventListenerHandle;
 use crate::dpi::PhysicalPosition;
+use crate::event::Force;
 use crate::event::{ModifiersState, MouseButton};
 
+use web_sys::HtmlCanvasElement;
 use web_sys::PointerEvent;
 
 #[allow(dead_code)]
@@ -122,7 +124,7 @@ impl PointerHandler {
 
     pub fn on_touch_move<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>, Force),
     {
         let canvas = canvas_common.raw.clone();
         self.on_touch_move = Some(canvas_common.add_event(
@@ -134,10 +136,11 @@ impl PointerHandler {
 
                 handler(
                     event.pointer_id(),
-                    PhysicalPosition {
-                        x: event.offset_x() as f64,
-                        // Flip the Y axis.
-                        y: (canvas.height() as i32 - event.offset_y()) as f64,
+                    touch_physical_position(&event, &canvas),
+                    Force::Calibrated {
+                        force: event.pressure() as f64,
+                        max_possible_force: 1.0,
+                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
                     },
                 );
             },
@@ -146,7 +149,7 @@ impl PointerHandler {
 
     pub fn on_touch_down<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>, Force),
     {
         let canvas = canvas_common.raw.clone();
         self.on_touch_down = Some(canvas_common.add_event(
@@ -158,10 +161,11 @@ impl PointerHandler {
 
                 handler(
                     event.pointer_id(),
-                    PhysicalPosition {
-                        x: event.offset_x() as f64,
-                        // Flip the Y axis.
-                        y: (canvas.height() as i32 - event.offset_y()) as f64,
+                    touch_physical_position(&event, &canvas),
+                    Force::Calibrated {
+                        force: event.pressure() as f64,
+                        max_possible_force: 1.0,
+                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
                     },
                 );
             },
@@ -170,7 +174,7 @@ impl PointerHandler {
 
     pub fn on_touch_up<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>, Force),
     {
         let canvas = canvas_common.raw.clone();
         self.on_touch_up = Some(canvas_common.add_event(
@@ -182,10 +186,11 @@ impl PointerHandler {
 
                 handler(
                     event.pointer_id(),
-                    PhysicalPosition {
-                        x: event.offset_x() as f64,
-                        // Flip the Y axis.
-                        y: (canvas.height() as i32 - event.offset_y()) as f64,
+                    touch_physical_position(&event, &canvas),
+                    Force::Calibrated {
+                        force: event.pressure() as f64,
+                        max_possible_force: 1.0,
+                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
                     },
                 );
             },
@@ -194,7 +199,7 @@ impl PointerHandler {
 
     pub fn on_touch_cancel<F>(&mut self, canvas_common: &super::Common, mut handler: F)
     where
-        F: 'static + FnMut(i32, PhysicalPosition<f64>),
+        F: 'static + FnMut(i32, PhysicalPosition<f64>, Force),
     {
         let canvas = canvas_common.raw.clone();
         self.on_touch_cancel = Some(canvas_common.add_event(
@@ -206,10 +211,11 @@ impl PointerHandler {
 
                 handler(
                     event.pointer_id(),
-                    PhysicalPosition {
-                        x: event.offset_x() as f64,
-                        // Flip the Y axis.
-                        y: (canvas.height() as i32 - event.offset_y()) as f64,
+                    touch_physical_position(&event, &canvas),
+                    Force::Calibrated {
+                        force: event.pressure() as f64,
+                        max_possible_force: 1.0,
+                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
                     },
                 );
             },
@@ -226,5 +232,19 @@ impl PointerHandler {
         self.on_touch_down = None;
         self.on_touch_up = None;
         self.on_touch_cancel = None;
+    }
+}
+
+fn touch_physical_position(
+    event: &PointerEvent,
+    canvas: &HtmlCanvasElement,
+) -> PhysicalPosition<f64> {
+    // not scale factor here because we can modify the dpi.
+    let dpi_width = canvas.width() as f64 / canvas.offset_width() as f64;
+    let dpi_height = canvas.height() as f64 / canvas.offset_height() as f64;
+    PhysicalPosition {
+        x: event.client_x() as f64 * dpi_width,
+        // Flip the Y axis because canvas's origin is top-left.
+        y: canvas.height() as f64 - event.client_y() as f64 * dpi_height,
     }
 }
