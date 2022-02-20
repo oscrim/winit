@@ -137,11 +137,7 @@ impl PointerHandler {
                 handler(
                     event.pointer_id(),
                     touch_physical_position(&event, &canvas),
-                    Force::Calibrated {
-                        force: event.pressure() as f64,
-                        max_possible_force: 1.0,
-                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
-                    },
+                    Force::Normalized(event.pressure() as f64),
                 );
             },
         ));
@@ -162,11 +158,7 @@ impl PointerHandler {
                 handler(
                     event.pointer_id(),
                     touch_physical_position(&event, &canvas),
-                    Force::Calibrated {
-                        force: event.pressure() as f64,
-                        max_possible_force: 1.0,
-                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
-                    },
+                    Force::Normalized(event.pressure() as f64),
                 );
             },
         ));
@@ -187,11 +179,7 @@ impl PointerHandler {
                 handler(
                     event.pointer_id(),
                     touch_physical_position(&event, &canvas),
-                    Force::Calibrated {
-                        force: event.pressure() as f64,
-                        max_possible_force: 1.0,
-                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
-                    },
+                    Force::Normalized(event.pressure() as f64),
                 );
             },
         ));
@@ -212,11 +200,7 @@ impl PointerHandler {
                 handler(
                     event.pointer_id(),
                     touch_physical_position(&event, &canvas),
-                    Force::Calibrated {
-                        force: event.pressure() as f64,
-                        max_possible_force: 1.0,
-                        altitude_angle: None, // I don't have any idea how to calculate this from tilt_x and tilt_y.
-                    },
+                    Force::Normalized(event.pressure() as f64),
                 );
             },
         ));
